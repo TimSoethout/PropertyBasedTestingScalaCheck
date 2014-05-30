@@ -45,6 +45,7 @@
 				<section>
 					<h1>Property based testing in Scala</h1>
 					<p><a href="http://www.scalatest.org/user_guide/property_based_testing">ScalaTest</a> with <a href="http://scalacheck.org/">ScalaCheck</a></p>
+					<p>Scala Community ING</p>
 				</section>
 
 				<section>
@@ -68,7 +69,22 @@
 				<section>
 					<h2>Simple Example</h2>
 					<ul>
-						
+						<pre><code contenteditable>
+  def reverseStrings(list: List[String]): List[String] = {
+    list match {
+      case Nil => Nil
+      case (x :: xs) => reverseStrings(xs) ++ List(x)
+    }
+  }
+						</code></pre>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Properties</h2>
+					<ul>
+						<li>Works well with pure functions, no side effects, same input garuantees same output</li>
+						<li>Help to test corner cases and more variants than manually chosen values</li>
 					</ul>
 				</section>
 
