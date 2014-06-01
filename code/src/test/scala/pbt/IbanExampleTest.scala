@@ -3,6 +3,7 @@ package pbt
 import IbanExample._
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{FlatSpec, Matchers}
+import org.scalacheck.Gen
 
 class IbanExampleTest extends FlatSpec with Matchers with GeneratorDrivenPropertyChecks {
 
@@ -21,10 +22,15 @@ class IbanExampleTest extends FlatSpec with Matchers with GeneratorDrivenPropert
     }
   }
 
-
+  def bbans: Gen[String] =
+    for {
+      x <- Gen.chooseNum(0, 9999999)
+    } yield x.toString
 
   it should "still contain the origin bban using a custom generator" in {
-
+    forAll(bbans) { bban =>
+      calculateIban(bban) should include(bban)
+    }
   }
 
 }
