@@ -18,13 +18,19 @@ class Example1Test extends FlatSpec with Matchers with GeneratorDrivenPropertyCh
 
   it should "have the same size" in {
     forAll {
-      (ss: List[String]) => reverseStrings(ss) should have length (ss.length)
+      (ss: List[String]) => reverseStrings(ss) should have length ss.length
     }
   }
 
   it should "have the same elements" in {
     forAll {
-      (ss: List[String]) => reverseStrings(ss) should contain theSameElementsAs (ss)
+      (ss: List[String]) => reverseStrings(ss) should contain theSameElementsAs ss
+    }
+  }
+
+  it should "be the same after reversing twice" in {
+    forAll {
+      (ss: List[String]) => reverseStrings(reverseStrings(ss)) should equal(ss)
     }
   }
 
