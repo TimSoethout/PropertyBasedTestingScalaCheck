@@ -55,7 +55,7 @@
 						<li>Declarative way to say what the unit under testing should do</li>
 						<li>Think in logic formula's</li>
 						<li>Abstraction over values</li>
-						<li>$\forall a : String \rightarrow a.reverse.reverse \equiv a $</li>
+						<li>$\forall a : List[String] \rightarrow a.reverse.reverse \equiv a $</li>
 					</ul>
 				</section>
 
@@ -70,13 +70,13 @@
 				<section>
 					<h2>Simple Example</h2>
 					<ul>
-						<pre><code contenteditable>
-  def reverseStrings(list: List[String]): List[String] = {
-    list match {
-      case Nil => Nil
-      case (x :: xs) => reverseStrings(xs) ++ List(x)
-    }
+						<pre><code data-trim contenteditable >
+def reverseStrings(list: List[String]): List[String] = {
+  list match {
+    case Nil => Nil
+    case (x :: xs) => reverseStrings(xs) ++ List(x)
   }
+}
 						</code></pre>
 					</ul>
 				</section>
