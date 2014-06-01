@@ -1,3 +1,5 @@
+package pbt
+
 import IbanExample._
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{FlatSpec, Matchers}

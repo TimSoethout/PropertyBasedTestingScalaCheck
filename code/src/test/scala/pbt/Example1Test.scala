@@ -1,3 +1,5 @@
+package pbt
+
 import Example1._
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{Matchers, FlatSpec}

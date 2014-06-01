@@ -1,6 +1,5 @@
-/**
- * Created by tim on 01/06/14.
- */
+package pbt
+
 object IbanExample {
 
   val countryPart = "NL"

@@ -1,3 +1,5 @@
+package pbt
+
 import IbanExample._
 import org.scalacheck._
 import Prop.forAll
