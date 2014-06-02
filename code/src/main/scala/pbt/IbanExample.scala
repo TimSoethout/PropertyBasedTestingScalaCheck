@@ -17,9 +17,9 @@ object IbanExample {
     s"${countryPart}${controlPart}${bankPart}${numberPart}"
   }
 
-  private def prefill(input: String, preferedLength: Int): String = {
+  def prefill(input: String, preferedLength: Int): String = {
     if (input.length < preferedLength)
-      List.fill(preferedLength - input.length)("0").mkString("") ++ input
+      "0" * (preferedLength - input.length) ++ input
     else input.substring(0, preferedLength)
   }
 }

@@ -1,11 +1,11 @@
 package pbt
 
 import IbanExample._
-import org.scalatest.prop.GeneratorDrivenPropertyChecks
+import org.scalatest.prop.{PropertyChecks, GeneratorDrivenPropertyChecks}
 import org.scalatest.{FlatSpec, Matchers}
-import org.scalacheck.Gen
+import org.scalacheck.{Arbitrary, Gen}
 
-class IbanExampleTest extends FlatSpec with Matchers with GeneratorDrivenPropertyChecks {
+class IbanExampleTest extends FlatSpec with Matchers with PropertyChecks {
 
   behavior of "IbanExample"
 
@@ -22,15 +22,29 @@ class IbanExampleTest extends FlatSpec with Matchers with GeneratorDrivenPropert
     }
   }
 
-  def bbans: Gen[String] =
-    for {
-      x <- Gen.chooseNum(0, 9999999)
-    } yield x.toString
+  def bbans: Gen[String] = Gen.chooseNum(0, 9999999) map (_.toString)
 
-  it should "still contain the origin bban using a custom generator" in {
-    forAll(bbans) { bban =>
-      calculateIban(bban) should include(bban)
+  it should "still contain the origin bban using a custom generator" in
+    forAll(bbans) {
+      bban =>
+        calculateIban(bban) should include(bban)
     }
-  }
 
+  behavior of "prefill"
+
+  it should "have the preferred length and end with the original string" in
+    forAll (Arbitrary.arbitrary[String], Gen.posNum[Int]) {
+      (s, i) =>
+        val filled = prefill(s, i)
+        filled should have length i
+        if(s.length <= i) filled should endWith(s)
+    }
+
+  it should "have leading zero's when smaller than preferred length" in
+    forAll (Arbitrary.arbitrary[String], Gen.posNum[Int]) {
+      (s: String, i: Int) =>
+        whenever(s.length < i) {
+          prefill(s, i) should startWith("0" * (i - s.length))
+        }
+    }
 }
