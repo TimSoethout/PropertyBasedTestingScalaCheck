@@ -70,9 +70,9 @@
         <section>
           <h2>Simple Example</h2>
           <ul>
-            <pre><code data-trim contenteditable >
+            <pre><code data-trim contenteditable>
 def reverseStrings(list: List[String]): List[String] = {
-  list match {
+ list match {
     case Nil => Nil
     case (x :: xs) => reverseStrings(xs) ++ List(x)
   }
@@ -101,15 +101,18 @@ def reverseStrings(list: List[String]): List[String] = {
 
         <section>
           <h2>Generators</h2>
-          <code>
-            def bbans: Gen[String] = Gen.chooseNum(0, 9999999) map (_.toString)
-          </code>
+          <pre><code data-trim contenteditable>
+def bbans: Gen[String] =
+  for {
+    n <- Gen.chooseNum(0, 9999999)
+  } yield n.toString
+          </code></pre>
         </section>
 
         <section>
           <h1>THE END</h1>
           <h3>BY Tim Soethout / tim.soethout@ing.nl</h3>
-          <p>Read back the slides <a href="http://blog.timmybankers.nl/PropertyBasedTestingScalaCheck/index.html#/">online</a></p>
+          <p><a href="http://blog.timmybankers.nl/PropertyBasedTestingScalaCheck/index.html#/">Slides</a> / <a href="https://github.com/TimSoethout/PropertyBasedTestingScalaCheck/tree/master/code">Code</a></p>
         </section>
 
       </div>
