@@ -100,6 +100,13 @@ def reverseStrings(list: List[String]): List[String] = {
 				</section>
 
 				<section>
+					<h2>Generators</h2>
+					<code>
+					  def bbans: Gen[String] = Gen.chooseNum(0, 9999999) map (_.toString)
+					</code>
+				</section>
+
+				<section>
 					<h1>THE END</h1>
 					<h3>BY Tim Soethout / tim.soethout@ing.nl</h3>
 					<p>Read back the slides <a href="http://blog.timmybankers.nl/PropertyBasedTestingScalaCheck/index.html#/">online</a></p>
