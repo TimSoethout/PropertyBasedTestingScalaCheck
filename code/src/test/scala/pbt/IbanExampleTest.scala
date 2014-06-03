@@ -4,13 +4,15 @@ import IbanExample._
 import org.scalatest.prop.PropertyChecks
 import org.scalatest.{FlatSpec, Matchers}
 import org.scalacheck.{Arbitrary, Gen}
+import scala.util.parsing.json.JSON
+import scala.io.Source
 
 class IbanExampleTest extends FlatSpec with Matchers with PropertyChecks {
 
   behavior of "IbanExample"
 
   it should "convert a simple bban correctly" in {
-    calculateIban("1111111") should be("NL24INGB0001111111")
+    calculateIban("1111111") should equal("NL24INGB0001111111")
   }
 
   it should "contain the origin bban" in {
@@ -30,6 +32,17 @@ class IbanExampleTest extends FlatSpec with Matchers with PropertyChecks {
         calculateIban(bban) should include(bban)
     }
 
+  it should "give the same result as openiban.nl" in {
+    forAll(bbans) {
+      bban =>
+        val json = Source.fromURL(s"http://www.openiban.nl/?rekeningnummer=$bban&output=json").mkString
+        val iban = JSON.parseFull(json).map {
+          case m: Map[String, String] => m("iban")
+        }.get
+        calculateIban(bban) should equal(iban)
+    }
+  }
+
   behavior of "prefill"
 
   it should "have the preferred length and end with the original string" in
@@ -45,7 +58,7 @@ class IbanExampleTest extends FlatSpec with Matchers with PropertyChecks {
       (s, i) =>
         whenever(s.length < i) {
           val nrOf0s = i - s.length
-          prefill(s,i) should startWith ("0" * nrOf0s)
+          prefill(s, i) should startWith("0" * nrOf0s)
         }
     }
 }
