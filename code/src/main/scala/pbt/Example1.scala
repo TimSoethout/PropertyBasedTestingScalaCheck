@@ -7,4 +7,10 @@ object Example1 {
       case (x :: xs) => reverseStrings(xs) ++ List(x)
     }
   }
+
+  def genericReverse[T](list: List[T]): List[T] = {
+    list.foldLeft(List[T]()) {
+      case (res, x) => x :: res
+    }
+  }
 }

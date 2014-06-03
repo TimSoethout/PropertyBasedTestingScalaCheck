@@ -14,7 +14,7 @@ class Example1Test extends FlatSpec with Matchers with GeneratorDrivenPropertyCh
 
   it should "also reverse all strings" in {
     forAll {
-      (ss: List[String]) => reverseStrings(ss) should be(ss.reverse) // should result in the same as library implementation
+      (ss: List[String]) => reverseStrings(ss) should equal(ss.reverse) // should result in the same as library implementation
     }
   }
 
@@ -36,4 +36,15 @@ class Example1Test extends FlatSpec with Matchers with GeneratorDrivenPropertyCh
     }
   }
 
+  behavior of "genericReverse"
+
+  it should "give the same reverse as reverseStrings" in
+    forAll {
+      (ss: List[String]) => genericReverse(ss) should equal(reverseStrings(ss))
+    }
+
+  it should "reverse for all all" in
+    forAll {
+      (a: List[Any]) => genericReverse(a) should equal(a.reverse)
+    }
 }
