@@ -45,6 +45,6 @@ class Example1Test extends FlatSpec with Matchers with GeneratorDrivenPropertyCh
 
   it should "reverse for all all" in
     forAll {
-      (a: List[Any]) => genericReverse(a) should equal(a.reverse)
+      (a: List[Int]) => genericReverse(a) should equal(a.reverse)
     }
 }
