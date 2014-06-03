@@ -64,6 +64,11 @@
           <ul>
             <li>Property-based testing for Scala</li>
             <li>Inspired on Haskell's QuickCheck</li>
+            <li>Generates test data with corner cases</li>
+            <li>Guides programmer to writing pure functions (TTD with property based checking)</li>
+            <li>Can be used in interactively in REPL</li>
+            <li>Can be used to test Java code (or any JVM-language for that matter)</li>
+            <li>Works autonomously or with ScalaTest or Specs2</li>
           </ul>
         </section>
 
@@ -84,7 +89,7 @@ def reverseStrings(list: List[String]): List[String] = {
         <section>
           <h2>Properties</h2>
           <ul>
-            <li>Works well with pure functions, no side effects, same input garuantees same output</li>
+            <li>Works well with pure functions, no side effects, same input guarantees same output</li>
             <li>Help to test corner cases and more variants than manually chosen values</li>
           </ul>
         </section>
@@ -107,12 +112,15 @@ def bbans: Gen[String] =
     n <- Gen.chooseNum(0, 9999999)
   } yield n.toString
           </code></pre>
+          <ul>
+            <li>Generators for primitive types and case classes for free</li>
+          </ul>
         </section>
 
         <section>
           <h1>THE END</h1>
           <h3>BY Tim Soethout / tim.soethout@ing.nl</h3>
-          <p><a href="http://blog.timmybankers.nl/PropertyBasedTestingScalaCheck/index.html#/">Slides</a> / <a href="https://github.com/TimSoethout/PropertyBasedTestingScalaCheck/tree/master/code">Code</a></p>
+          <p><a href="http://blog.timmybankers.nl/PropertyBasedTestingScalaCheck/index.html#/">Slides</a> / <a href="https://github.com/TimSoethout/PropertyBasedTestingScalaCheck/tree/master/code">Code with more examples</a></p>
         </section>
 
       </div>
