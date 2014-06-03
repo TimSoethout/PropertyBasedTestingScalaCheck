@@ -1,7 +1,7 @@
 package pbt
 
 import IbanExample._
-import org.scalatest.prop.{PropertyChecks, GeneratorDrivenPropertyChecks}
+import org.scalatest.prop.PropertyChecks
 import org.scalatest.{FlatSpec, Matchers}
 import org.scalacheck.{Arbitrary, Gen}
 
@@ -33,18 +33,19 @@ class IbanExampleTest extends FlatSpec with Matchers with PropertyChecks {
   behavior of "prefill"
 
   it should "have the preferred length and end with the original string" in
-    forAll (Arbitrary.arbitrary[String], Gen.posNum[Int]) {
+    forAll(Arbitrary.arbitrary[String], Gen.posNum[Int]) {
       (s, i) =>
         val filled = prefill(s, i)
         filled should have length i
-        if(s.length <= i) filled should endWith(s)
+        if (s.length <= i) filled should endWith(s)
     }
 
-  it should "have leading zero's when smaller than preferred length" in
-    forAll (Arbitrary.arbitrary[String], Gen.posNum[Int]) {
-      (s: String, i: Int) =>
+  it should "have enough leading zero's when smaller than preferred length" in
+    forAll(Arbitrary.arbitrary[String], Gen.posNum[Int]) {
+      (s, i) =>
         whenever(s.length < i) {
-          prefill(s, i) should startWith("0" * (i - s.length))
+          val nrOf0s = i - s.length
+          prefill(s,i) should startWith ("0" * nrOf0s)
         }
     }
 }
