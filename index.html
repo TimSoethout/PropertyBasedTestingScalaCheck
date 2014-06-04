@@ -52,11 +52,28 @@
         <section>
           <h2>Property based testing</h2>
           <ul>
-            <li>Declarative way to say what the unit under testing should do</li>
-            <li>Think in logic formula's</li>
+            <li>Different way of testing</li>
+            <li>Declarative</li>
+            <li>Logic properties</li>
             <li>Abstraction over values</li>
-            <li>$\forall a : List[String] \rightarrow a.reverse.reverse \equiv a $</li>
+            <aside class="notes">
+              <ul>
+                <li>Declarative way to say what the unit under testing should do</li>
+                <li>Think in logic formula's</li>
+                <li>Abstraction over values</li>
+              </ul>
+            </aside>
           </ul>
+        </section>
+
+        <section>
+          <h2>Properties</h2>
+          <p>$\forall s : List[String] \rightarrow s.reverse.reverse \equiv s$</p>
+          <p class="fragment"> or:
+          <pre class="fragment"><code data-trim contenteditable>
+forAll((s: String) => s.reverse.reverse == s)
+          </code></pre>
+          </p>
         </section>
 
         <section>
