@@ -72,34 +72,34 @@
 
       <section>
         <h2>Properties</h2>
-        <p>
-          $\forall s : List[String] \rightarrow s.reverse.reverse \equiv s$
-        </p>
+        <p>$\forall s : String \rightarrow s.reverse.reverse \equiv s$</p>
         <p class="fragment">
           or:
           <pre class="fragment"><code data-trim contenteditable>forAll((s: String) => s.reverse.reverse == s)</code></pre>
+          <pre class="fragment"><code data-trim contenteditable>+ String.should be the same after reversing twice: OK, passed 100 tests.</code></pre>
         </p>
       </section>
 
       <section>
         <h2>ScalaCheck</h2>
         <p>Checking properties on random datasets created by generators</p>
-        <aside class="notes">
-          <ul>
-            <li>Property-based testing for Scala</li>
-            <li>Inspired on Haskell's <a href="http://hackage.haskell.org/package/QuickCheck">QuickCheck</a></li>
-            <li>Generates test data with corner cases</li>
-            <li>
-              Guides programmer to writing pure functions (TTD with property based checking)
-            </li>
-            <li>Can be used in interactively in REPL</li>
-            <li>
-              Can be used to test Java code (or any JVM-language for that matter)
-            </li>
-            <li>Works autonomously or with ScalaTest or Specs2</li>
-            <li>Shrinking strategies to reduce the counter example</li>
-          </ul>
-        </aside>
+        <ul class="fragment">
+          <li>Property-based testing for Scala</li>
+          <li>
+            Inspired on Haskell's
+            <a href="http://hackage.haskell.org/package/QuickCheck">QuickCheck</a>
+          </li>
+          <li>Generates test data with corner cases</li>
+          <li>
+            Guides programmer to writing pure functions (TTD with property based checking)
+          </li>
+          <li>Can be used in interactively in REPL</li>
+          <li>
+            Can be used to test Java code (or any JVM-language for that matter)
+          </li>
+          <li>Works autonomously or with ScalaTest or Specs2</li>
+          <li>Shrinking strategies to reduce the counter example</li>
+        </ul>
       </section>
 
       <section>
@@ -120,65 +120,65 @@ def reverseStrings(list: List[String]): List[String] = {
         <h2>ScalaCheck Autonomous</h2>
         <pre><code data-trim contenteditable>
 property("should be the same after reversing twice") =
-  forAll((s: String) => reverseStrings(reverseStrings(ss)) == s)
+  forAll((ss: List[String]) => reverseStrings(reverseStrings(ss)) == ss)
         </code></pre>
       </section>
 
       <section>
         <h2>ScalaTest with ScalaCheck</h2>
         <pre><code data-trim contenteditable>
-  behavior of "reverseStrings"      
-  it should "give the same after reversing twice" in {
-    forAll {
-      (ss: List[String]) => 
-        reverseStrings(reverseStrings(ss)) should equal(ss)
-    }
+behavior of "reverseStrings"      
+it should "give the same after reversing twice" in {
+  forAll {
+    (ss: List[String]) => 
+      reverseStrings(reverseStrings(ss)) should equal(ss)
   }
+}
         </code></pre>
-      </section>
-
-      <section>
-        <h2>Properties</h2>
-        <ul>
-          <li>
-            Work well with pure functions: no side effects, same input guarantees same output
-          </li>
-          <li>
-            Help to test corner cases and more variants than manually chosen values
-          </li>
-        </ul>
       </section>
 
       <section>
         <h2>Property Test Strategies</h2>
         <ul>
           <li>Do not redo your implementation in your test</li>
-          <li>Test some (trivial) properties</li>
-          <li>Think backwards (let the $\forall$ denote the output)</li>
+          <li>Test multiple (trivial) properties</li>
           <li>
-            Use a slower, different or proven way to find the correct answers (- maybe your previous implementation that you are refactoring?)
+            Think backwards (generate the output: $\forall l : SortedList \rightarrow shuffle(l).sort \equiv l$)
+          </li>
+          <li>
+            Use a slower, different or proven way to find the correct answers (- maybe your previous implementation that you are improving)
           </li>
         </ul>
       </section>
 
       <section>
         <h2>Generators</h2>
-        <pre><code data-trim contenteditable>
+        <p class="fragment">Generators for primitive types and case classes are provided</p>
+        <div class="fragment">
+          Or roll your own:
+          <pre><code data-trim contenteditable>
 def bbans: Gen[String] =
   for {
     n <- Gen.chooseNum(0, 9999999)
   } yield n.toString
           </code></pre>
-        <ul>
-          <li>Generators for primitive types and case classes for free</li>
-        </ul>
+        </div>
+
       </section>
 
-       <section>
-        <h2>Code</h2>
+      <section>
+        <h2>Demo and code</h2>
         <a href="#" class="image navigate-down">
-          <img src="images/iban.png" alt="Down arrow">
-        </a>
+          <img src="images/iban.png" alt="Down arrow"></a>
+      </section>
+
+      <section>
+        <h2>Concluding</h2>
+        <ul>
+          <li>Property based checking with ScalaCheck</li>
+          <li>Extra tool in testing tool belt</li>
+          <li>Can test non-Scala code</li>
+        </ul>
       </section>
 
       <section>
