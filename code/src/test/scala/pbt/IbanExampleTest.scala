@@ -11,10 +11,12 @@ class IbanExampleTest extends FlatSpec with Matchers with PropertyChecks {
 
   behavior of "IbanExample"
 
+  // basic unit test
   it should "convert a simple bban correctly" in {
     calculateIban("1111111") should equal("NL24INGB0001111111")
   }
 
+  // simple property
   it should "contain the origin bban" in {
     forAll {
       bban: Int =>
@@ -26,12 +28,15 @@ class IbanExampleTest extends FlatSpec with Matchers with PropertyChecks {
 
   def bbans: Gen[String] = Gen.chooseNum(0, 9999999) map (_.toString)
 
+  // property with generator
   it should "still contain the origin bban using a custom generator" in
     forAll(bbans) {
       bban =>
         calculateIban(bban) should include(bban)
     }
 
+
+  // property against known correct implementation
   it should "give the same result as openiban.nl" in {
     forAll(bbans) {
       bban =>
@@ -43,9 +48,12 @@ class IbanExampleTest extends FlatSpec with Matchers with PropertyChecks {
     }
   }
 
+
+  // some magic to make the generator see the diference between String and Bban
   case class Bban(bban: String)
   implicit def BBanToString = (bban : Bban) => bban.bban
 
+  // implicit generator
   implicit def BbanGen: Arbitrary[Bban] = Arbitrary(Gen.chooseNum(0, 9999999) map (i => Bban(i.toString)))
 
   it should "still contain the origin bban using the bban generator" in
@@ -54,6 +62,7 @@ class IbanExampleTest extends FlatSpec with Matchers with PropertyChecks {
         calculateIban(bban) should include(bban)
     }
 
+  
   behavior of "prefill"
 
   it should "have the preferred length and end with the original string" in

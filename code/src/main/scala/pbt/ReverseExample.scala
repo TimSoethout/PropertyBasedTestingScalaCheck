@@ -1,6 +1,6 @@
 package pbt
 
-object Example1 {
+object ReverseExample {
   def reverseStrings(list: List[String]): List[String] = {
     list match {
       case Nil => Nil

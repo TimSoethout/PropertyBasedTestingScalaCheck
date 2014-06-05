@@ -1,20 +1,22 @@
 package pbt
 
-import Example1._
+import ReverseExample._
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{Matchers, FlatSpec}
 
-class Example1Test extends FlatSpec with Matchers with GeneratorDrivenPropertyChecks {
+class ReverseExampleTest extends FlatSpec with Matchers with GeneratorDrivenPropertyChecks {
   behavior of "reverseStrings"
 
+  // normal unit test
   it should "reverse a string" in {
     val reversed = reverseStrings(List("A", "list", "of", "Strings"))
     reversed should equal(List("Strings", "of", "list", "A"))
   }
 
+  // forall with native implementation
   it should "also reverse all strings" in {
     forAll {
-      (ss: List[String]) => reverseStrings(ss) should equal(ss.reverse) // should result in the same as library implementation
+      (ss: List[String]) => reverseStrings(ss) should equal(ss.reverse)
     }
   }
 

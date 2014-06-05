@@ -4,6 +4,9 @@ import IbanExample._
 import org.scalacheck._
 import org.scalacheck.Prop.{forAll, BooleanOperators}
 
+/**
+ * Some properties using the ScalaTest
+ */
 object PropertiesTest extends Properties("IbanExample") {
 
   property("should be the same after reversing twice") =
@@ -16,13 +19,13 @@ object PropertiesTest extends Properties("IbanExample") {
           (calculateIban(bban.toString) contains bban.toString)
     }
 
-  property("test") =
+  property("prefilled strings should have the preferred length") =
     forAll(Arbitrary.arbitrary[String], Gen.posNum[Int]) {
       (s, i) =>
         prefill(s, i).length == i
     }
 
-  property("bounded") =
+  property("bounded prefilled strings should have the correct number of preceding 0's") =
     forAll(Arbitrary.arbitrary[String], Gen.posNum[Int]) {
       (s, i) =>
         (s.length < i) ==>
