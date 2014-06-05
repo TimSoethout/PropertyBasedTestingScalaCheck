@@ -31,70 +31,81 @@
     }
   </script>
 
-    <!--[if lt IE 9]>
-    <script src="lib/js/html5shiv.js"></script>
-    <![endif]-->
-  </head>
+  <!--[if lt IE 9]>
+  <script src="lib/js/html5shiv.js"></script>
+  <![endif]-->
+</head>
 
-  <body>
+<body>
 
-    <div class="reveal">
+  <div class="reveal">
 
-      <!-- Any section element inside of this container is displayed as a slide -->
-      <div class="slides">
-        <section>
-          <h1>Property based testing in Scala</h1>
-          <p><a href="http://www.scalatest.org/user_guide/property_based_testing">ScalaTest</a> with <a href="http://scalacheck.org/">ScalaCheck</a></p>
-          <p>Scala Community ING</p>
-          <p>By Tim Soethout</p>
-        </section>
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+      <section>
+        <h1>Property based testing in Scala</h1>
+        <p>
+          <a href="http://www.scalatest.org/user_guide/property_based_testing">ScalaTest</a>
+          with
+          <a href="http://scalacheck.org/">ScalaCheck</a>
+        </p>
+        <p>Scala Community ING</p>
+        <p>By Tim Soethout</p>
+      </section>
 
-        <section>
-          <h2>Property based testing</h2>
+      <section>
+        <h2>Property based testing</h2>
+        <ul>
+          <li>Different way of testing</li>
+          <li>Declarative</li>
+          <li>Logic properties</li>
+          <li>Abstraction over values</li>
+          <aside class="notes">
+            <ul>
+              <li>Declarative way to say what the unit under testing should do</li>
+              <li>Think in logic formula's</li>
+              <li>Abstraction over values</li>
+            </ul>
+          </aside>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Properties</h2>
+        <p>
+          $\forall s : List[String] \rightarrow s.reverse.reverse \equiv s$
+        </p>
+        <p class="fragment">
+          or:
+          <pre class="fragment"><code data-trim contenteditable>forAll((s: String) => s.reverse.reverse == s)</code></pre>
+        </p>
+      </section>
+
+      <section>
+        <h2>ScalaCheck</h2>
+        <p>Checking properties on random datasets created by generators</p>
+        <aside class="notes">
           <ul>
-            <li>Different way of testing</li>
-            <li>Declarative</li>
-            <li>Logic properties</li>
-            <li>Abstraction over values</li>
-            <aside class="notes">
-              <ul>
-                <li>Declarative way to say what the unit under testing should do</li>
-                <li>Think in logic formula's</li>
-                <li>Abstraction over values</li>
-              </ul>
-            </aside>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Properties</h2>
-          <p>$\forall s : List[String] \rightarrow s.reverse.reverse \equiv s$</p>
-          <p class="fragment"> or:
-          <pre class="fragment"><code data-trim contenteditable>
-forAll((s: String) => s.reverse.reverse == s)
-          </code></pre>
-          </p>
-        </section>
-
-        <section>
-          <h2>ScalaCheck</h2>
-          <ul>
-            <li>Checking properties on random datasets created by generators</li>
             <li>Property-based testing for Scala</li>
-            <li>Inspired on Haskell's QuickCheck</li>
+            <li>Inspired on Haskell's <a href="http://hackage.haskell.org/package/QuickCheck">QuickCheck</a></li>
             <li>Generates test data with corner cases</li>
-            <li>Guides programmer to writing pure functions (TTD with property based checking)</li>
+            <li>
+              Guides programmer to writing pure functions (TTD with property based checking)
+            </li>
             <li>Can be used in interactively in REPL</li>
-            <li>Can be used to test Java code (or any JVM-language for that matter)</li>
+            <li>
+              Can be used to test Java code (or any JVM-language for that matter)
+            </li>
             <li>Works autonomously or with ScalaTest or Specs2</li>
             <li>Shrinking strategies to reduce the counter example</li>
           </ul>
-        </section>
+        </aside>
+      </section>
 
-        <section>
-          <h2>Simple Example</h2>
-          <ul>
-            <pre><code data-trim contenteditable>
+      <section>
+        <h2>Simple Example</h2>
+        <ul>
+          <pre><code data-trim contenteditable>
 def reverseStrings(list: List[String]): List[String] = {
  list match {
     case Nil => Nil
@@ -102,54 +113,92 @@ def reverseStrings(list: List[String]): List[String] = {
   }
 }
             </code></pre>
-          </ul>
-        </section>
+        </ul>
+      </section>
 
-        <section>
-          <h2>Properties</h2>
-          <ul>
-            <li>Works well with pure functions, no side effects, same input guarantees same output</li>
-            <li>Help to test corner cases and more variants than manually chosen values</li>
-          </ul>
-        </section>
+      <section>
+        <h2>ScalaCheck Autonomous</h2>
+        <pre><code data-trim contenteditable>
+property("should be the same after reversing twice") =
+  forAll((s: String) => reverseStrings(reverseStrings(ss)) == s)
+        </code></pre>
+      </section>
 
-        <section>
-          <h2>Property Test Strategies</h2>
-          <ul>
-            <li>Do not redo your implementation in your test</li>
-            <li>Test some (trivial) properties</li>
-            <li>Think backwards (let the $\forall$ denote the output)</li>
-            <li>Use a slower, different or proven way to find the correct answers (- maybe your previous implementation that you are refactoring?)</li>
-          </ul>
-        </section>
+      <section>
+        <h2>ScalaTest with ScalaCheck</h2>
+        <pre><code data-trim contenteditable>
+  behavior of "reverseStrings"      
+  it should "give the same after reversing twice" in {
+    forAll {
+      (ss: List[String]) => 
+        reverseStrings(reverseStrings(ss)) should equal(ss)
+    }
+  }
+        </code></pre>
+      </section>
 
-        <section>
-          <h2>Generators</h2>
-          <pre><code data-trim contenteditable>
+      <section>
+        <h2>Properties</h2>
+        <ul>
+          <li>
+            Work well with pure functions: no side effects, same input guarantees same output
+          </li>
+          <li>
+            Help to test corner cases and more variants than manually chosen values
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Property Test Strategies</h2>
+        <ul>
+          <li>Do not redo your implementation in your test</li>
+          <li>Test some (trivial) properties</li>
+          <li>Think backwards (let the $\forall$ denote the output)</li>
+          <li>
+            Use a slower, different or proven way to find the correct answers (- maybe your previous implementation that you are refactoring?)
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Generators</h2>
+        <pre><code data-trim contenteditable>
 def bbans: Gen[String] =
   for {
     n <- Gen.chooseNum(0, 9999999)
   } yield n.toString
           </code></pre>
-          <ul>
-            <li>Generators for primitive types and case classes for free</li>
-          </ul>
-        </section>
+        <ul>
+          <li>Generators for primitive types and case classes for free</li>
+        </ul>
+      </section>
 
-        <section>
-          <h1>THE END</h1>
-          <h3>BY Tim Soethout / tim.soethout@ing.nl</h3>
-          <p><a href="http://blog.timmybankers.nl/PropertyBasedTestingScalaCheck/index.html#/">Slides</a> / <a href="https://github.com/TimSoethout/PropertyBasedTestingScalaCheck/tree/master/code">Code with more examples</a></p>
-        </section>
+       <section>
+        <h2>Code</h2>
+        <a href="#" class="image navigate-down">
+          <img src="images/iban.png" alt="Down arrow">
+        </a>
+      </section>
 
-      </div>
+      <section>
+        <h1>THE END</h1>
+        <h3>BY Tim Soethout / tim.soethout@ing.nl</h3>
+        <p>
+          <a href="http://blog.timmybankers.nl/PropertyBasedTestingScalaCheck/index.html#/">Slides</a>
+          /
+          <a href="https://github.com/TimSoethout/PropertyBasedTestingScalaCheck/tree/master/code">Code with more examples</a>
+        </p>
+      </section>
 
     </div>
 
-    <script src="lib/js/head.min.js"></script>
-    <script src="js/reveal.min.js"></script>
+  </div>
 
-    <script>
+  <script src="lib/js/head.min.js"></script>
+  <script src="js/reveal.min.js"></script>
+
+  <script>
 
       // Full list of configuration options available here:
       // https://github.com/hakimel/reveal.js#configuration
