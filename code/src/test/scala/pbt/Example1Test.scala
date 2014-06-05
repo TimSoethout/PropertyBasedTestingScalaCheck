@@ -30,7 +30,7 @@ class Example1Test extends FlatSpec with Matchers with GeneratorDrivenPropertyCh
     }
   }
 
-  it should "be the same after reversing twice" in {
+  it should "give the same after reversing twice" in {
     forAll {
       (ss: List[String]) => reverseStrings(reverseStrings(ss)) should equal(ss)
     }
