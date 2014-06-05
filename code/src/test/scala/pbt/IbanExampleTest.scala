@@ -43,6 +43,17 @@ class IbanExampleTest extends FlatSpec with Matchers with PropertyChecks {
     }
   }
 
+  case class Bban(bban: String)
+  implicit def BBanToString = (bban : Bban) => bban.bban
+
+  implicit def BbanGen: Arbitrary[Bban] = Arbitrary(Gen.chooseNum(0, 9999999) map (i => Bban(i.toString)))
+
+  it should "still contain the origin bban using the bban generator" in
+    forAll {
+      bban: Bban =>
+        calculateIban(bban) should include(bban)
+    }
+
   behavior of "prefill"
 
   it should "have the preferred length and end with the original string" in
